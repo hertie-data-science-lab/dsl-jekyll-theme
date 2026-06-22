@@ -3,9 +3,14 @@ name: Notify consumers
 # When the theme changes, tell every consumer site to rebuild so the restyle
 # propagates. Consumers listen for a `repository_dispatch` of type `theme-updated`.
 #
-# Requires a repo secret THEME_DISPATCH_TOKEN: a fine-grained PAT (or GitHub App
-# token) with `actions: write` on the consumer repos. The default GITHUB_TOKEN
-# cannot trigger workflows in other repositories.
+# Credential (the default GITHUB_TOKEN cannot dispatch to other repos). Either:
+#   - PREFERRED: a GitHub App (org-owned, no expiry) with Contents: write on the
+#     consumers, installed on them. Store its id + private key as repo secrets
+#     THEME_DISPATCH_APP_ID and THEME_DISPATCH_APP_PRIVATE_KEY. A short-lived token
+#     is minted per run below.
+#   - FALLBACK: a fine-grained PAT with Contents: write on the consumers, stored as
+#     THEME_DISPATCH_TOKEN.
+# The App token is used if present; otherwise the PAT; otherwise the step no-ops.
 
 on:
   push:
@@ -22,14 +27,28 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Preferred: mint a short-lived token from the org-owned GitHub App.
+      # continue-on-error so that if the App secrets aren't set we fall back to the PAT.
+      - name: Generate app token (preferred)
+        id: app-token
+        continue-on-error: true
+        uses: actions/create-github-app-token@v2
+        with:
+          app-id: ${{ secrets.THEME_DISPATCH_APP_ID }}
+          private-key: ${{ secrets.THEME_DISPATCH_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+
       - name: Dispatch theme-updated to consumers
         env:
-          TOKEN: ${{ secrets.THEME_DISPATCH_TOKEN }}
+          APP_TOKEN: ${{ steps.app-token.outputs.token }}
+          PAT: ${{ secrets.THEME_DISPATCH_TOKEN }}
         run: |
+          TOKEN="${APP_TOKEN:-$PAT}"
           if [ -z "$TOKEN" ]; then
-            echo "THEME_DISPATCH_TOKEN not set — skipping fan-out (configure the secret to enable)."
+            echo "No dispatch credential — set the THEME_DISPATCH_APP_* secrets (preferred) or THEME_DISPATCH_TOKEN. Skipping fan-out."
             exit 0
           fi
+          [ -n "$APP_TOKEN" ] && echo "Using GitHub App token." || echo "Using PAT fallback."
           # consumers.txt: one owner/repo per line; blank lines and # comments ignored.
           grep -vE '^[[:space:]]*(#|$)' consumers.txt | while read -r repo; do
             repo="$(echo "$repo" | tr -d '[:space:]')"

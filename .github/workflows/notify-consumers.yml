@@ -4,12 +4,12 @@ name: Notify consumers
 # propagates. Consumers listen for a `repository_dispatch` of type `theme-updated`.
 #
 # Credential (the default GITHUB_TOKEN cannot dispatch to other repos). Either:
-#   - PREFERRED: a GitHub App (org-owned, no expiry) with Contents: write on the
-#     consumers, installed on them. Store its id + private key as repo secrets
-#     THEME_DISPATCH_APP_ID and THEME_DISPATCH_APP_PRIVATE_KEY. A short-lived token
-#     is minted per run below.
+#   - PREFERRED: the shared org-owned `dsl-teaching-automation` GitHub App (no expiry),
+#     installed on the consumer repos with Contents: write. Its id + private key are
+#     ORG-level secrets DSL_AUTOMATION_APP_ID and DSL_AUTOMATION_APP_PRIVATE_KEY, so the
+#     same App serves every DSL automation. A short-lived token is minted per run below.
 #   - FALLBACK: a fine-grained PAT with Contents: write on the consumers, stored as
-#     THEME_DISPATCH_TOKEN.
+#     THEME_DISPATCH_TOKEN (interim; remove once the App is verified).
 # The App token is used if present; otherwise the PAT; otherwise the step no-ops.
 
 on:
@@ -34,8 +34,8 @@ jobs:
         continue-on-error: true
         uses: actions/create-github-app-token@v2
         with:
-          app-id: ${{ secrets.THEME_DISPATCH_APP_ID }}
-          private-key: ${{ secrets.THEME_DISPATCH_APP_PRIVATE_KEY }}
+          app-id: ${{ secrets.DSL_AUTOMATION_APP_ID }}
+          private-key: ${{ secrets.DSL_AUTOMATION_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
 
       - name: Dispatch theme-updated to consumers

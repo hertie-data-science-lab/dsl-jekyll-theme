@@ -1,0 +1,203 @@
+/**
+ * DSL shared components: cards, buttons, callouts, diagrams.
+ * Used across DSL sites (onboarding, course sites). Brand-token driven —
+ * restyle via _user_vars.scss.
+ */
+
+/* --- Buttons (pill, like the deck's "Access class" / "View path") --- */
+.btn {
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 999px;
+    background-color: $primary-color;
+    color: #fff !important;
+    font-family: 'Titillium Web', sans-serif;
+    font-weight: 600;
+    font-size: 0.9em;
+    line-height: 1.2;
+    text-decoration: none !important;
+    border: 2px solid $primary-color;
+    transition: background-color .15s ease, color .15s ease;
+
+    &:hover {
+        background-color: #fff;
+        color: $primary-color !important;
+    }
+}
+
+.btn--ghost {
+    background-color: transparent;
+    color: $primary-color !important;
+    &:hover { background-color: $primary-color; color: #fff !important; }
+}
+
+/* --- Hero band (landing pages) --- */
+.dsl-hero {
+    border-left: 6px solid $primary-color;
+    background: #faf7f7;
+    padding: 24px 28px;
+    margin-bottom: $spacing-unit;
+    border-radius: 0 6px 6px 0;
+
+    p { margin-bottom: 0; }
+    .dsl-hero__lead { font-size: 1.15em; }
+}
+
+/* --- Callout / note box --- */
+.callout {
+    border: 1px solid $grey-color-light;
+    border-left: 4px solid $primary-color;
+    background: #fbfbfc;
+    padding: 14px 18px;
+    border-radius: 0 4px 4px 0;
+    margin-bottom: $spacing-unit;
+
+    > :last-child { margin-bottom: 0; }
+}
+
+.callout--muted {
+    border-left-color: $grey-color;
+    background: #fafafa;
+    color: $grey-color-dark;
+}
+
+/* --- Responsive card grid --- */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 18px;
+    margin: $spacing-unit 0;
+    padding: 0;
+    list-style: none;
+
+    li { margin: 0; }
+    li:before { content: none !important; position: static !important; }
+}
+
+.card-grid--2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.card-grid--3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+
+/* --- Generic card --- */
+.dsl-card {
+    border: 1px solid $grey-color-light;
+    border-radius: 8px;
+    background: #fff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: box-shadow .15s ease, transform .15s ease;
+
+    &:hover { box-shadow: 0 4px 14px rgba(0,0,0,.08); transform: translateY(-2px); }
+
+    h3, h4 {
+        font-family: 'Titillium Web', sans-serif;
+        margin-top: 0;
+        margin-bottom: 8px;
+        color: $title-color;
+    }
+
+    p { margin-bottom: 12px; }
+    .dsl-card__foot { margin-top: auto; }
+}
+
+/* Eyebrow label on a card (e.g. "DATAQUEST", "LINEAR ALGEBRA") */
+.dsl-card__label {
+    display: inline-block;
+    font-family: 'Titillium Web', sans-serif;
+    font-weight: 600;
+    font-size: 0.72em;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: $primary-color;
+    margin-bottom: 6px;
+}
+
+/* --- Maths "is it necessary?" pyramid --- */
+.math-pyramid {
+    margin: $spacing-unit 0;
+
+    .tier {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin: 0 auto 8px;
+        padding: 14px 18px;
+        border-radius: 6px;
+        background: lighten($primary-color, 52%);
+        border: 1px solid lighten($primary-color, 40%);
+    }
+    .tier__name {
+        flex: 0 0 38%;
+        font-family: 'Titillium Web', sans-serif;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: $accent-color;
+    }
+    .tier__desc { flex: 1; margin: 0; }
+
+    .tier--1 { width: 70%; }
+    .tier--2 { width: 85%; }
+    .tier--3 { width: 100%; }
+
+    @include media-query($on-palm) {
+        .tier { flex-direction: column; align-items: flex-start; gap: 4px; width: 100% !important; }
+        .tier__name { flex-basis: auto; }
+    }
+}
+
+/* --- Two-approaches comparison --- */
+.two-approaches {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin: $spacing-unit 0;
+
+    @include media-query($on-palm) { grid-template-columns: 1fr; }
+
+    .approach {
+        border: 1px solid $grey-color-light;
+        border-radius: 8px;
+        padding: 20px;
+        background: #fff;
+    }
+    .approach__tag {
+        font-family: 'Titillium Web', sans-serif;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: $primary-color;
+        margin-bottom: 6px;
+    }
+}
+
+/* --- De-emphasised resource list (Further resources page) --- */
+.resource-list {
+    list-style: none;
+    margin-left: 0;
+    font-size: 0.95em;
+
+    li {
+        padding: 10px 0;
+        border-bottom: 1px solid $grey-color-light;
+        margin: 0;
+    }
+    li:before { content: none !important; position: static !important; }
+
+    .resource-list__name {
+        font-weight: 600;
+        font-family: 'Titillium Web', sans-serif;
+    }
+    .resource-list__links a { margin-right: 12px; white-space: nowrap; }
+}
+
+/* Topic block on the resources page */
+.resource-topic {
+    margin-bottom: 18px;
+
+    .resource-topic__name {
+        font-family: 'Titillium Web', sans-serif;
+        font-weight: 600;
+        color: $title-color;
+    }
+}

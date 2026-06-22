@@ -1,0 +1,8 @@
+# Sites that consume this theme via remote_theme.
+# One owner/repo per line. A push to this theme dispatches `theme-updated`
+# to each, triggering a rebuild so the restyle propagates.
+# Dynamically-generated cohort sites need not be listed: their deploy workflow
+# also runs on a weekly schedule as a backstop.
+
+hertie-data-science-lab/mds-onboarding
+hertie-data-science-lab/course-website-template

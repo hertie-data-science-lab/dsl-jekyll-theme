@@ -1,0 +1,33 @@
+# ============================================================
+# dsl-jekyll-theme — shared Jekyll theme for Hertie DSL sites
+# ============================================================
+# Consumers pull this theme via `remote_theme: hertie-data-science-lab/dsl-jekyll-theme`.
+# This _config.yml only affects a standalone build/preview of the theme repo itself;
+# consuming sites supply their own _config.yml.
+
+title: "DSL Jekyll Theme"
+description: "Shared brand theme for Hertie Data Science Lab websites."
+
+# Brand / institution defaults (consumers override)
+schoolname: "Hertie School"
+schoolurl: "https://hertie-school.org/en/datasciencelab"
+dsl_org_url: "https://github.com/hertie-data-science-lab"
+course_name: "DSL Jekyll Theme"
+course_semester: ""
+address: |
+    Data Science Lab
+    Hertie School
+    Friedrichstraße 180
+    10117 Berlin, Germany
+
+markdown: kramdown
+permalink: pretty
+
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - node_modules
+  - README.md
+  - consumers.txt
+  - LICENSE

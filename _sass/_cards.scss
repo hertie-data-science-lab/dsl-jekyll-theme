@@ -11,7 +11,7 @@
     border-radius: 999px;
     background-color: $primary-color;
     color: #fff !important;
-    font-family: 'Titillium Web', sans-serif;
+    font-family: $display-font;
     font-weight: 600;
     font-size: 0.9em;
     line-height: 1.2;
@@ -74,8 +74,8 @@
     li:before { content: none !important; position: static !important; }
 }
 
+/* --2 widens the minimum track; the default grid already suits 3-up rows. */
 .card-grid--2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-.card-grid--3 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 
 /* --- Generic card --- */
 .dsl-card {
@@ -90,7 +90,7 @@
     &:hover { box-shadow: 0 4px 14px rgba(0,0,0,.08); transform: translateY(-2px); }
 
     h3, h4 {
-        font-family: 'Titillium Web', sans-serif;
+        font-family: $display-font;
         margin-top: 0;
         margin-bottom: 8px;
         color: $title-color;
@@ -103,7 +103,7 @@
 /* Eyebrow label on a card (e.g. "DATAQUEST", "LINEAR ALGEBRA") */
 .dsl-card__label {
     display: inline-block;
-    font-family: 'Titillium Web', sans-serif;
+    font-family: $display-font;
     font-weight: 600;
     font-size: 0.72em;
     letter-spacing: 0.08em;
@@ -128,7 +128,7 @@
     }
     .tier__name {
         flex: 0 0 38%;
-        font-family: 'Titillium Web', sans-serif;
+        font-family: $display-font;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.04em;
@@ -162,7 +162,7 @@
         background: #fff;
     }
     .approach__tag {
-        font-family: 'Titillium Web', sans-serif;
+        font-family: $display-font;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.06em;
@@ -186,7 +186,7 @@
 
     .resource-list__name {
         font-weight: 600;
-        font-family: 'Titillium Web', sans-serif;
+        font-family: $display-font;
     }
     .resource-list__links a { margin-right: 12px; white-space: nowrap; }
 }
@@ -196,7 +196,7 @@
     margin-bottom: 18px;
 
     .resource-topic__name {
-        font-family: 'Titillium Web', sans-serif;
+        font-family: $display-font;
         font-weight: 600;
         color: $title-color;
     }

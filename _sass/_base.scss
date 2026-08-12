@@ -404,11 +404,23 @@ a.tosu {
 }
 
 .image--cover-container {
-    width: 90px;
+    // Wide enough for a two-line role under the 80px portrait; the old 90px was
+    // sized for the name alone and wrapped a title to one word per line.
+    width: 130px;
     float: left;
     text-align: center;
     margin: 0px;
-    margin-right: 40px;
+    margin-right: 24px;
+    margin-bottom: 12px;
+}
+
+// Optional `title` from a course's people.yml / dsl-course.yml (e.g. "Assistant
+// Professor of ..."). Secondary to the name, which stays the card's headline.
+.profile-title {
+    font-size: 0.75rem;
+    line-height: 1.25;
+    opacity: 0.75;
+    margin-top: -6px;
 }
 
 .image--cover {

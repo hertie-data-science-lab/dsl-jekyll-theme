@@ -42,6 +42,7 @@ layout: default
                     {% else %}
                     <p>{{ins.name}}</p>
                     {% endif %}
+                    {% if ins.title %}<p class="profile-title">{{ ins.title }}</p>{% endif %}
                 </div>
                 {% endfor %}
             </div>
@@ -58,6 +59,7 @@ layout: default
                     {% else %}
                     <p>{{ta.name}}</p>
                     {% endif %}
+                    {% if ta.title %}<p class="profile-title">{{ ta.title }}</p>{% endif %}
                 </div>
                 {% endfor %}
             </div>

@@ -1,4 +1,4 @@
-<div class="col col-1" style="color: #59468f ;font-weight: bold;" data-label="Event">Term</div>
+<div class="col col-1" style="color: #59468f ;font-weight: bold;" data-label="Event">{{ include.event.name | default: "Term" }}</div>
 <div class="col col-1-2" data-label="Date">
     {% if include.event.dateless %}
     <b>TBC</b>

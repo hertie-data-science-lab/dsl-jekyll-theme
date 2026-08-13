@@ -1,0 +1,15 @@
+<div class="col col-1" style="color: #7d6230 ;font-weight: bold;" data-label="Event">{{ include.event.name }}</div>
+<div class="col col-1-2" data-label="Date">
+    {% if include.event.dateless %}
+    <b>TBC</b>
+    {% else %}
+    {{ include.event.date | date: site.dateformat }}
+    {% unless include.event.hide_time %}
+    {{ include.event.date | date: "%H:%M" }}
+    {% endunless %}
+    {% if include.event.tbc %}<b>(TBC)</b>{% endif %}
+    <br class="date-spliter" />{{ include.event.date | date: "%A" }}
+    {% endif %}
+</div>
+<div class="col col-2" data-label="Description">{{ include.event.description }}</div>
+<div class="col col-4 markdown-content" data-label="Course Material">{{ include.event.content }}</div>

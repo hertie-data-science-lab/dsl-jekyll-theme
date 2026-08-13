@@ -1,0 +1,14 @@
+<div class="col col-1" style="color: #3c763d ;font-weight: bold;" data-label="Event">Lab</div>
+<div class="col col-1-2" data-label="Date">
+    {{ include.event.date | date: site.dateformat }}
+    {{ include.event.date | date: "%H:%M" }}
+    <br class="date-spliter"/>{{ include.event.date | date: "%A" }}
+</div>
+<div class="col col-2" data-label="Description">
+    {{ include.event.title }}
+</div>
+<div class="col col-4 markdown-content" data-label="Course Material">
+    {% if include.event.content != '' %}
+    {{ include.event.content }}
+    {% endif %}
+</div>

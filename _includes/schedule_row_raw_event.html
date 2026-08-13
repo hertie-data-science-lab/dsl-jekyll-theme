@@ -1,8 +1,0 @@
-{% comment %}
-Legacy alias for `type: raw_event`. The generator now emits `type: special_event`
-for clinics, guest lectures and review sessions, but sites built before that change
-still carry raw_event entries - and the theme reaches them ahead of a re-sync, so a
-missing include here would be a hard build failure. Renders identically to
-special_event; delete once no site emits raw_event.
-{% endcomment %}
-{% include schedule_row_special_event.html event=include.event %}

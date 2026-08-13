@@ -10,7 +10,7 @@ load-bearing here: this renders inside a sentence in the Updates box.
 {%- else -%}
 {%- assign href = link.url | prepend: site.baseurl -%}
 {%- endif -%}
-{%- unless forloop.first %} {% endunless -%}
+{%- unless forloop.first %}{{ " " }}{%- endunless -%}
 [<a title="Download {{ link.name }}" href="{{ href }}">{{ link.name }}</a>]
 {%- endfor -%}
 {%- endif -%}

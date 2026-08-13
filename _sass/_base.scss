@@ -290,16 +290,50 @@ a.tosu {
         border-bottom: none;
     }
 
+    // Schedule row colours - one hue per event category, matching the bold label
+    // colour set inline in each _includes/schedule_row_<type>.html:
+    //
+    //   lecture        #eef1f4  label #4a5560   slate
+    //   lab            #dff0d8  label #3c763d   green
+    //   assignment     #d9edf7  label #31708f   blue
+    //   due            #d9edf7  label #31708f   blue (one assignment category:
+    //                                           the same hue as its handout row,
+    //                                           told apart by the "Due" label and
+    //                                           the bold date/description)
+    //   exam           #f2dede  label #a94442   red (unchanged - faculty know it)
+    //   special_event  #fbf2d5  label #7d6230   amber
+    //   term_date      #e5dcf0  label #59468f   violet
+    //
+    // All backgrounds sit at the same pale tonal level, so body text (#111) and
+    // links keep >5:1 contrast on every row; each label clears 4.5:1 on its own
+    // background.
+
+    .table-row-lecture {
+        background-color: #eef1f4;
+    }
+
+    .table-row-lab {
+        background-color: #dff0d8;
+    }
+
     .table-row-assignment {
         background-color: #d9edf7;
     }
 
     .table-row-due {
-        background-color: #FCF8E5;
+        background-color: #d9edf7;
     }
 
     .table-row-exam {
         background-color: #f2dede;
+    }
+
+    .table-row-special_event {
+        background-color: #fbf2d5;
+    }
+
+    .table-row-term_date {
+        background-color: #e5dcf0;
     }
 
     .col-1 {

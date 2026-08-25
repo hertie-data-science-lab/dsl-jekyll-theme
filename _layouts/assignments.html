@@ -2,17 +2,27 @@
 layout: page
 ---
 
+{% comment %}
+The intro line only makes sense beside an actual list, so an empty collection says so
+instead. `content` is the generated page stub (site.py), which states who can open them.
+{% endcomment %}
+{% if site.assignments == nil or site.assignments.size == 0 %}
+<p>No assignments released yet.</p>
+{% else %}
 {{ content }}
-<ul id="archive">
-{% for asg in site.assignments %}
-      <li class="archiveposturl" style="background: transparent">
-        <span><a href="{{ asg.url | prepend: site.baseurl}}">{{ asg.title }}</a></span>
-<strong style="font-size:100%; font-family: 'Titillium Web', sans-serif; float:right">
-<a title="Download problems (pdf)" href="{{ asg.pdf | prepend: site.baseurl }}"><i class="fas fa-file-pdf"></i></a> 
-{% if asg.attachment %}
-&nbsp; <a title="Download attachments (zip)" href="{{ asg.attachment | prepend: site.baseurl }}"><i class="fas fa-file-archive"></i></a>
-{% endif %}
-</strong> 
-      </li>
-{% endfor %}
+
+{% assign entries = site.assignments | sort: 'date' %}
+{% for entry in entries %}
+<section class="session">
+<h2 class="session-title"><a href="{{ entry.url | prepend: site.baseurl }}">{{ entry.title }}</a></h2>
+{% if entry.pdf %}
+<p class="session-files-label" style="margin-bottom: 2px;"><strong>Files</strong></p>
+<ul class="session-files">
+  <li class="raw_li"><a title="Download problems (pdf)" href="{{ entry.pdf | prepend: site.baseurl }}"><i class="fas fa-file-pdf"></i> problems (pdf)</a></li>
+  {% if entry.attachment %}<li class="raw_li"><a title="Download attachments (zip)" href="{{ entry.attachment | prepend: site.baseurl }}"><i class="fas fa-file-archive"></i> attachments (zip)</a></li>{% endif %}
 </ul>
+{% endif %}
+</section>
+{% unless forloop.last %}<hr class="session-rule"/>{% endunless %}
+{% endfor %}
+{% endif %}

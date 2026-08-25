@@ -5,37 +5,36 @@ layout: page
 {{ content }}
 
 {% comment %}
-Readings, session by session. Three things can be true of a session here, and the page
-shows whichever apply:
+Readings, session by session - the same block as Lectures and Labs, with the citation list
+passed in as `extra` so it sits where a session's description does.
 
-  reading_list  the citation text the teaching team wrote, inlined verbatim from the
-                released `readings/NN_.../` folder. This is the reading LIST - authors,
-                titles, chapters - and it is public.
-  "reading -"   links to the reading files themselves. On a COHORT site they point into
-                the private materials repo, so only enrolled members can open one: that
-                site is public, and hosting the readings there would publish copyrighted
-                material to the open internet. On the public open-courseware site they are
-                hosted deliberately. Which of the two it is decides the page's own intro
-                line, so this layout does not claim either.
-  readings_pending  the plan ships readings for this session but they have not landed yet.
+Three things can be true of a session here, and the page shows whichever apply:
 
-A session with none of the three simply doesn't appear - a lecture-only week would
-otherwise sit here reading "not released yet" for the whole term.
+  reading_list      the citation text the teaching team wrote, inlined verbatim from the
+                    released `readings/NN_.../` folder. Its own headings arrive already
+                    demoted (site.py), so `## Required Readings` nests under the session
+                    heading instead of outranking it.
+  "reading -" links the reading files themselves. On a COHORT site they point into the
+                    private materials repo, so only enrolled members can open one; on the
+                    public open-courseware site they are hosted deliberately. Which of the
+                    two it is decides the page's own intro line, so this layout claims
+                    neither.
+  readings_pending  the plan ships readings for this session but they have not landed.
 
-This lives in the theme rather than in each site's own page so that a change reaches every
-cohort site at once (see the toolkit's site.py, which owns the page stub). Readings only -
-everything released, session or not, is the All Materials tab (`materials.html`).
+A session with none of the three does not appear - a lecture-only week would otherwise sit
+here reading "not released yet" for the whole term.
 {% endcomment %}
-{% assign lectures_sorted = site.lectures | sort: 'date' %}
-{% for lecture in lectures_sorted %}
-{% capture readings %}{% for link in lecture.links %}{% if link.name contains "reading -" %}<li><a href="{% if link.url contains '://' %}{{ link.url }}{% else %}{{ link.url | prepend: site.baseurl }}{% endif %}">{{ link.name | remove: "reading - " }}</a></li>{% endif %}{% endfor %}{% endcapture %}
-{% if lecture.reading_list or readings != "" or lecture.readings_pending %}
-<h3>{% include session_title.html lecture=lecture %}</h3>
-{% if lecture.reading_list %}<div class="markdown-content">{{ lecture.reading_list | markdownify }}</div>{% endif %}
-{% if readings != "" %}
-<p style="margin-bottom: 2px;">Files:</p>
-<ul>{{ readings }}</ul>
-{% endif %}
-{% if lecture.readings_pending and lecture.reading_list == nil %}<p>Not released yet.</p>{% endif %}
+{% assign entries = site.lectures | sort: 'date' %}
+{% assign shown = 0 %}
+{% for entry in entries %}
+{% capture has_files %}{% for link in entry.links %}{% if link.name contains "reading - " %}x{% endif %}{% endfor %}{% endcapture %}
+{% if entry.reading_list or has_files != "" or entry.readings_pending %}
+{% if shown > 0 %}<hr class="session-rule"/>{% endif %}
+{% assign shown = shown | plus: 1 %}
+<section class="session">
+{% capture citations %}{% if entry.reading_list %}<div class="reading-list markdown-content">{{ entry.reading_list | markdownify }}</div>{% endif %}{% if entry.readings_pending %}<p>Not released yet.</p>{% endif %}{% endcapture %}
+{% include session_entry.html entry=entry section="reading" extra=citations %}
+</section>
 {% endif %}
 {% endfor %}
+{% if shown == 0 %}<p>No readings released yet.</p>{% endif %}

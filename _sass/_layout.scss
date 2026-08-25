@@ -365,3 +365,11 @@ hr.session-rule {
     border-top: 1px solid #e3e3e3;
     margin: 1.6em 0;
 }
+
+/* The syllabus link on the landing page - present only when a syllabus has been released
+   (see _layouts/home.html). Sized up because it is the one document a student looks for
+   before anything else. */
+.syllabus-link {
+    margin: 0.2em 0 1.2em 0;
+    font-size: 1.05em;
+}

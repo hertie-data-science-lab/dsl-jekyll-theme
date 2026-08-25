@@ -12,11 +12,9 @@ questions the curated pages cannot - a student's "what do I actually have?" and 
 team's "did my file ship?" - including material no session ordinal covers, which until this
 existed was released and then invisible.
 
-Nested to whatever depth a release actually has, closed by default below the top-level
-sections: a directory's name still links straight to its GitHub tree, and the arrow beside
-it opens its contents in the page instead (see `_includes/materials_entry.html`, which
-recurses for it). Sections themselves are open by default when there are few enough to
-scan; collapsed beyond that.
+Sections come pre-folded (a directory is one counted link, never its contents), because a
+single one of them can hold a couple of thousand files. Open by default when there are few
+enough sections to scan; collapsed beyond that.
 {% endcomment %}
 {%- comment -%}
 Course-level documents first, unheaded: the syllabus and the README are not a section, and
@@ -43,7 +41,7 @@ keying them by the repo they sit in listed each of them once per content repo.
     </summary>
     <ul>
       {% for entry in section.entries %}
-        {% include materials_entry.html entry=entry %}
+      <li class="raw_li"><a href="{{ entry.url }}">{{ entry.name }}</a>{% if entry.files %} <span style="opacity: 0.7;">({{ entry.files }} file{% unless entry.files == 1 %}s{% endunless %})</span>{% endif %}</li>
       {% endfor %}
     </ul>
   </details>

@@ -333,3 +333,35 @@ article ul#archive > li:before {
 ul#archive li span a:hover {
        border-bottom: #bdbdbd 1px solid;
 } */
+
+/* Session blocks - the shared shape behind the Lectures, Labs, Readings and Assignments
+   pages (see _includes/session_entry.html). One rule and one gap between entries, so a
+   twelve-session term reads as a list rather than a wall. */
+.session {
+    margin: 0 0 1.2em 0;
+
+    .session-title {
+        margin: 0 0 0.35em 0;
+    }
+    /* The reading list arrives with its own headings already demoted by site.py, so they
+       nest under .session-title rather than outranking it. Tighten them: at h3/h4 the
+       theme's default margins leave the block looking detached from its session. */
+    .reading-list h3,
+    .reading-list h4,
+    .reading-list h5 {
+        margin: 0.6em 0 0.2em 0;
+    }
+    .session-description p:last-child,
+    .reading-list p:last-child {
+        margin-bottom: 0.4em;
+    }
+    .session-files {
+        margin: 0 0 0 1.2em;
+    }
+}
+
+hr.session-rule {
+    border: 0;
+    border-top: 1px solid #e3e3e3;
+    margin: 1.6em 0;
+}

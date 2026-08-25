@@ -373,3 +373,9 @@ hr.session-rule {
     margin: 0.2em 0 1.2em 0;
     font-size: 1.05em;
 }
+
+/* Course-level documents at the top of All Materials - the syllabus, the README. Not a
+   section, so no heading and no disclosure triangle; just the documents. */
+.course-documents {
+    margin: 0 0 1.2em 1.2em;
+}

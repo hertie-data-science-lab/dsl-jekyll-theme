@@ -16,6 +16,19 @@ Sections come pre-folded (a directory is one counted link, never its contents), 
 single one of them can hold a couple of thousand files. Open by default when there are few
 enough sections to scan; collapsed beyond that.
 {% endcomment %}
+{%- comment -%}
+Course-level documents first, unheaded: the syllabus and the README are not a section, and
+keying them by the repo they sit in listed each of them once per content repo.
+{%- endcomment -%}
+{% assign docs = site.data.materials.documents %}
+{% if docs and docs.size > 0 %}
+<ul class="course-documents">
+{% for doc in docs %}
+  <li class="raw_li"><a href="{{ doc.url }}">{{ doc.name }}</a></li>
+{% endfor %}
+</ul>
+{% endif %}
+
 {% assign sections = site.data.materials.sections %}
 {% if sections and sections.size > 0 %}
 <ul id="archive">
@@ -35,6 +48,6 @@ enough sections to scan; collapsed beyond that.
 </li>
 {% endfor %}
 </ul>
-{% else %}
+{% elsif docs == nil or docs.size == 0 %}
 <p>Nothing has been released to this cohort yet.</p>
 {% endif %}

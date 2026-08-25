@@ -9,6 +9,18 @@ layout: default
     {% include announcements.html %}
     <br />
 
+    {%- comment -%}
+    The syllabus, pinned. `site.data.materials.syllabus` is written by the toolkit only when
+    a syllabus has actually been released - it finds a root file whose name says so, under
+    whatever name and format the course uses (SYLLABUS.md, SYLLABUS.pdf, ...). No syllabus,
+    no line: this block disappears rather than showing an empty one.
+    {%- endcomment -%}
+    {% if site.data.materials and site.data.materials.syllabus %}
+    <p class="syllabus-link">
+        <a href="{{ site.data.materials.syllabus }}"><strong>Syllabus</strong></a>
+    </p>
+    {% endif %}
+
     <h2>Course Description</h2>
     <p>{{ site.course_description }}</p>
     

@@ -11,10 +11,12 @@ shows whichever apply:
   reading_list  the citation text the teaching team wrote, inlined verbatim from the
                 released `readings/NN_.../` folder. This is the reading LIST - authors,
                 titles, chapters - and it is public.
-  "reading -"   links to the reading files themselves. They point into the cohort's
-                PRIVATE materials repo, so they resolve only for enrolled students: this
-                site repo is public, and hosting the readings here would publish
-                copyrighted material to the open internet.
+  "reading -"   links to the reading files themselves. On a COHORT site they point into
+                the private materials repo, so only enrolled members can open one: that
+                site is public, and hosting the readings there would publish copyrighted
+                material to the open internet. On the public open-courseware site they are
+                hosted deliberately. Which of the two it is decides the page's own intro
+                line, so this layout does not claim either.
   readings_pending  the plan ships readings for this session but they have not landed yet.
 
 A session with none of the three simply doesn't appear - a lecture-only week would
@@ -30,7 +32,7 @@ reaches every cohort site at once (see the toolkit's site.py, which owns the pag
 <h3>{% include session_title.html lecture=lecture %}</h3>
 {% if lecture.reading_list %}<div class="markdown-content">{{ lecture.reading_list | markdownify }}</div>{% endif %}
 {% if readings != "" %}
-<p style="margin-bottom: 2px;">Files (enrolled students only):</p>
+<p style="margin-bottom: 2px;">Files:</p>
 <ul>{{ readings }}</ul>
 {% endif %}
 {% if lecture.readings_pending and lecture.reading_list == nil %}<p>Not released yet.</p>{% endif %}

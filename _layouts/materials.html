@@ -1,0 +1,40 @@
+---
+layout: page
+---
+
+{{ content }}
+
+{% comment %}
+All Materials - the catch-all index, generated into `_data/materials.yml` by the toolkit's
+site.py. Every OTHER page is curated: a row exists because the schedule named a session,
+and its links are that session's files. This one is complete, so it answers the two
+questions the curated pages cannot - a student's "what do I actually have?" and a teaching
+team's "did my file ship?" - including material no session ordinal covers, which until this
+existed was released and then invisible.
+
+Sections come pre-folded (a directory is one counted link, never its contents), because a
+single one of them can hold a couple of thousand files. Open by default when there are few
+enough sections to scan; collapsed beyond that.
+{% endcomment %}
+{% assign sections = site.data.materials.sections %}
+{% if sections and sections.size > 0 %}
+<ul id="archive">
+{% for section in sections %}
+<li class="archiveposturl" style="background: transparent">
+  <details {% if sections.size <= 4 %}open{% endif %}>
+    <summary style="cursor: pointer;">
+      <span style="font-weight: bold;">{{ section.name }}</span>
+      <span style="opacity: 0.7;"> &mdash; {{ section.files }} file{% unless section.files == 1 %}s{% endunless %}</span>
+    </summary>
+    <ul>
+      {% for entry in section.entries %}
+      <li class="raw_li"><a href="{{ entry.url }}">{{ entry.name }}</a>{% if entry.files %} <span style="opacity: 0.7;">({{ entry.files }} file{% unless entry.files == 1 %}s{% endunless %})</span>{% endif %}</li>
+      {% endfor %}
+    </ul>
+  </details>
+</li>
+{% endfor %}
+</ul>
+{% else %}
+<p>Nothing has been released to this cohort yet.</p>
+{% endif %}

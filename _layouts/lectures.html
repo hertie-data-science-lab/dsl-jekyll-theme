@@ -22,10 +22,14 @@ select the lecture ones - otherwise every lab renders an empty container here.
     </div>
     {% endif %}
     <div class="content">
-        <span style="font-weight: bold;">{{ lecture.title }}</span><br>
+        <span style="font-weight: bold;">{% include session_title.html lecture=lecture %}</span><br>
 
-        <strong>tl;dr:</strong> {{ lecture.tldr }}
-        <br/>
+        {% comment %}
+        The blurb the schedule.yml entry declared for this session. It used to be a
+        generated "Released materials for session 1 (enrolled students only)." carrying a
+        `tl;dr:` label, which said the same thing on every row of every course.
+        {% endcomment %}
+        {% if lecture.description %}{{ lecture.description }}<br/>{% endif %}
         <strong>
         {% for link in lecture.links %}{% if link.name contains "lecture -" %}[<a title="Download {{ link.name }}" href="{% if link.url contains '://' %}{{ link.url }}{% else %}{{ link.url | prepend: site.baseurl }}{% endif %}">{{ link.name | remove: "lecture - " }}</a>] {% endif %}{% endfor %}
         </strong>

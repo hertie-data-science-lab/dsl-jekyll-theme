@@ -1,0 +1,20 @@
+---
+layout: page
+---
+
+{{ content }}
+
+{% comment %}
+Labs are their own entries in the _lectures collection (`type: lab`), each carrying its
+"lab - ..." links. In the theme rather than each site's own labs.md so that a change
+reaches every cohort site at once (see the toolkit's site.py, which owns the page stub).
+{% endcomment %}
+{% assign lab_entries = site.lectures | where: "type", "lab" | sort: 'date' %}
+{% for lecture in lab_entries %}
+{% capture labs %}{% for link in lecture.links %}{% if link.name contains "lab -" %}<li><a href="{% if link.url contains '://' %}{{ link.url }}{% else %}{{ link.url | prepend: site.baseurl }}{% endif %}">{{ link.name | remove: "lab - " }}</a></li>{% endif %}{% endfor %}{% endcapture %}
+{% if labs != "" %}
+<h3>{% include session_title.html lecture=lecture %}</h3>
+{% if lecture.description %}<p>{{ lecture.description }}</p>{% endif %}
+<ul>{{ labs }}</ul>
+{% endif %}
+{% endfor %}

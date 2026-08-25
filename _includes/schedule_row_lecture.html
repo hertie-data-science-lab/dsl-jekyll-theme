@@ -4,21 +4,24 @@
     {{ include.event.date | date: "%H:%M" }}
     <br class="date-spliter"/>{{ include.event.date | date: "%A" }}
 </div>
-<div class="col col-2" data-label="Description">
-    {{ include.event.title }}
+{%- comment -%}
+`title` is the ordinal ("Session 3"); `subtitle` is the name the schedule.yml entry
+declared for it. The ordinal is what ties the row to `materials/lectures/03_...`, so it
+stays and the name sits under it rather than replacing it.
+{%- endcomment -%}
+<div class="col col-2" data-label="Title">
+    <b>{{ include.event.title }}</b>
+    {%- if include.event.subtitle %}<br/>{{ include.event.subtitle }}{%- endif -%}
 </div>
+{%- comment -%}
+The materials themselves once they exist, and the "not released yet" sentence until then.
+The body used to render here either way, which told a reader of the SCHEDULE to "open the
+links above" - links that live on the Lectures tab, not this page.
+{%- endcomment -%}
 <div class="col col-4 markdown-content" data-label="Course Material">
-    <!-- {% if include.event.suggested_readings %}
-    <p style="margin-bottom: 2px">Suggested Readings:</p>
-    <ul>
-        {% for m in include.event.suggested_readings %}
-        <li class="raw_li">{% if m.url %}<a href="{{ m.url }}">{{ m.title }}</a>{% else %}{{ m.title }}{%
-            endif %}</li>
-
-        {% endfor %}
-    </ul>
-    {% endif %} -->
-    {% if include.event.content != '' %}
-    {{ event.content }}
-    {% endif %}
+    {%- if include.event.links and include.event.links.size > 0 -%}
+    {% include lecture_links.html lecture=include.event %}
+    {%- else -%}
+    {{ include.event.content }}
+    {%- endif -%}
 </div>

@@ -11,12 +11,14 @@
 `handout_pending` (site.py) is an assignment whose dates are in the plan but which has not
 been handed out. The row is the plan's and belongs on the schedule from the day it is
 written - it is the assignment's CONTENT that waits, so the title above is the plan-side
-name and there is nothing here to link to yet. The same shape as an unreleased session row:
-its body sentence in place of its links.
+name and there is nothing here to link to yet. Exactly the shape of an unreleased session
+row (schedule_row_lecture.html): the generated body sentence in place of the links. The
+sentence itself is site.py's, not this file's - written in one place, it cannot drift from
+the one the Assignments tab shows for the same state.
 {%- endcomment -%}
 <div class="col col-4 markdown-content" data-label="Course Material">
     {%- if include.event.handout_pending -%}
-    Not handed out yet.
+    {{ include.event.content }}
     {%- else -%}
     [<a href="{{ include.event.url | prepend: site.baseurl}}">{{ include.event.title }}</a>]
     {% if include.event.solutions %}

@@ -25,7 +25,10 @@ Three things can be true of a session here, and the page shows whichever apply:
                     N are not yet released - they will appear in .../readings/... when they
                     are", which names the readings path among the rest, so saying it again
                     here said it twice. What is left is the case that sentence does not
-                    cover - lecture materials released, readings still to come.
+                    cover - lecture materials released, readings still to come. Keyed on
+                    `unreleased`, the flag site.py sets for precisely "nothing has shipped
+                    for this session", rather than on the body being empty - which is the
+                    same thing only by coincidence.
 
 A session with none of the three does not appear - a lecture-only week would otherwise sit
 here reading "not released yet" for the whole term.
@@ -38,7 +41,7 @@ here reading "not released yet" for the whole term.
 {% if shown > 0 %}<hr class="session-rule"/>{% endif %}
 {% assign shown = shown | plus: 1 %}
 <section class="session">
-{% capture citations %}{% if entry.reading_list %}<div class="reading-list markdown-content">{{ entry.reading_list | markdownify }}</div>{% endif %}{% if entry.readings_pending and entry.content == '' %}<p class="session-note"><em>Readings for this session are not yet released.</em></p>{% endif %}{% endcapture %}
+{% capture citations %}{% if entry.reading_list %}<div class="reading-list markdown-content">{{ entry.reading_list | markdownify }}</div>{% endif %}{% if entry.readings_pending and entry.unreleased != true %}<p class="session-note"><em>Readings for this session are not yet released.</em></p>{% endif %}{% endcapture %}
 {% include session_entry.html entry=entry section="reading" extra=citations %}
 </section>
 {% endif %}

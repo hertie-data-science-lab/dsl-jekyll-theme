@@ -19,18 +19,19 @@ the title shown is the plan-side name, never the one the template's README gives
 {% assign entries = site.assignments | sort: 'date' %}
 {% for entry in entries %}
 <section class="session">
-{% if entry.handout_pending %}
-<h2 class="session-title">{{ entry.title }}</h2>
-<div class="markdown-content session-note">{{ entry.content }}</div>
-{% else %}
-<h2 class="session-title"><a href="{{ entry.url | prepend: site.baseurl }}">{{ entry.title }}</a></h2>
+{%- comment -%}
+One heading either way - only the anchor differs, and duplicating the `h2` between two
+branches is how the two come to disagree. A pending entry has no `pdf`/`attachment`, so the
+files block below needs no guard of its own.
+{%- endcomment -%}
+<h2 class="session-title">{% if entry.handout_pending %}{{ entry.title }}{% else %}<a href="{{ entry.url | prepend: site.baseurl }}">{{ entry.title }}</a>{% endif %}</h2>
+{% if entry.handout_pending %}<div class="markdown-content session-note">{{ entry.content }}</div>{% endif %}
 {% if entry.pdf %}
 <p class="session-files-label" style="margin-bottom: 2px;"><strong>Files</strong></p>
 <ul class="session-files">
   <li class="raw_li"><a title="Download problems (pdf)" href="{{ entry.pdf | prepend: site.baseurl }}"><i class="fas fa-file-pdf"></i> problems (pdf)</a></li>
   {% if entry.attachment %}<li class="raw_li"><a title="Download attachments (zip)" href="{{ entry.attachment | prepend: site.baseurl }}"><i class="fas fa-file-archive"></i> attachments (zip)</a></li>{% endif %}
 </ul>
-{% endif %}
 {% endif %}
 </section>
 {% unless forloop.last %}<hr class="session-rule"/>{% endunless %}

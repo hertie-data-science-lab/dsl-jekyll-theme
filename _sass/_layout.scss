@@ -366,6 +366,15 @@ ul#archive li span a:hover {
     }
 }
 
+/* An assignment page's name, under its identifier in the h1 (see _layouts/assignment.html).
+   Sized between the title and the body: it is the assignment's real name, not metadata. */
+.post-subtitle {
+    margin: -0.4em 0 0.8em 0;
+    font-family: $display-font;
+    font-size: 1.15em;
+    color: $grey-color-dark;
+}
+
 hr.session-rule {
     border: 0;
     border-top: 1px solid #e3e3e3;

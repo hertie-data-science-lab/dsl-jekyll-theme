@@ -24,7 +24,7 @@ One heading either way - only the anchor differs, and duplicating the `h2` betwe
 branches is how the two come to disagree. A pending entry has no `pdf`/`attachment`, so the
 files block below needs no guard of its own.
 {%- endcomment -%}
-<h2 class="session-title">{% if entry.handout_pending %}{{ entry.title }}{% else %}<a href="{{ entry.url | prepend: site.baseurl }}">{{ entry.title }}</a>{% endif %}</h2>
+<h2 class="session-title">{% if entry.handout_pending %}{% include session_title.html lecture=entry %}{% else %}<a href="{{ entry.url | prepend: site.baseurl }}">{% include session_title.html lecture=entry %}</a>{% endif %}</h2>
 {% if entry.handout_pending %}<div class="markdown-content session-note">{{ entry.content }}</div>{% endif %}
 {% if entry.pdf %}
 <p class="session-files-label" style="margin-bottom: 2px;"><strong>Files</strong></p>

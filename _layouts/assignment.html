@@ -40,7 +40,12 @@ title: page.title
     {% if page.repo_url %}
     <div class="callout">
       <p><a class="btn" href="{{ page.repo_url }}">Open your repository on GitHub</a></p>
-      <p>Your work goes in <code>{{ page.repo_name }}</code>. Clone it, commit as you go, and
+      {%- comment -%}
+      `escape`: `repo_name` is a SHAPE, `<slug>-<your-handle>`, and those angle brackets
+      make `<your-handle>` an unknown HTML tag that the browser silently drops - so the
+      name rendered as `assignment-1-` with the useful half missing.
+      {%- endcomment -%}
+      <p>Your work goes in <code>{{ page.repo_name | escape }}</code>. Clone it, commit as you go, and
       push to <code>main</code> - that push is your submission.</p>
     </div>
     {% endif %}
@@ -83,7 +88,7 @@ title: page.title
   {% if page.repo_url %}
   <p style="font-size: 0.9em; color: #5c5c5c;">
     Submit by pushing to <code>main</code> in
-    <a href="{{ page.repo_url }}"><code>{{ page.repo_name }}</code></a>.
+    <a href="{{ page.repo_url }}"><code>{{ page.repo_name | escape }}</code></a>.
   </p>
   {% endif %}
 

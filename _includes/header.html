@@ -5,9 +5,17 @@
           <td><img width="75" src="{{ "/assets/images/logo.png" | relative_url }}" valign="middle"></td>
           <td style="padding-left:10px;"><a class="schoolname" style="font-size: 15px;" class="site-title" href="{{ site.schoolurl }}">{{ site.schoolname }}</a>
           <br/>
-          <span style="margin-top: -2px;margin-bottom: -10px;" class="site-title"><a href="{{ site.baseurl }}/" title="{{ site.course_name }} / {{ site.course_semester }} - {{ site.schoolname }}"><b>{{ site.course_name }}</a></b></span>
+          {%- comment -%}
+          `course_name` on a course site, `title` on every other site this theme serves -
+          and no semester line at all where there is no semester, rather than an empty bold
+          strip under the name.
+          {%- endcomment -%}
+          {%- assign site_name = site.course_name | default: site.title -%}
+          <span style="margin-top: -2px;margin-bottom: -10px;" class="site-title"><a href="{{ site.baseurl }}/" title="{{ site_name }} - {{ site.schoolname }}"><b>{{ site_name }}</a></b></span>
+          {% if site.course_semester and site.course_semester != "" %}
           <br/>
           <span class="coursesemeter" style="font-size: 12px;font-weight: bold;margin-top: 10px;display: block;">{{ site.course_semester }}</span>
+          {% endif %}
           </td>
         </tr></table>
 

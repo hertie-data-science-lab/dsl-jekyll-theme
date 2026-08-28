@@ -51,3 +51,11 @@ $on-laptop:        950px;
         "fancy-image",
         "cards"
 ;
+
+// The consuming site's own styles, LAST so they can override anything above and so every
+// variable declared here is in scope for them. Empty in this repo: Jekyll puts a site's
+// own `_sass` ahead of the theme's on the Sass load path, so a site that ships
+// `_sass/_course.scss` gets its own and one that does not resolves to the empty file
+// here. DSL course sites are written one by the course sync (templates/site/ in
+// dsl-teaching-toolkit).
+@import "course";

@@ -290,53 +290,6 @@ a.tosu {
         border-bottom: none;
     }
 
-    // Schedule row colours - one hue per event category, matching the bold label
-    // colour set inline in each _includes/schedule_row_<type>.html:
-    //
-    //   lecture        #f2dede  label #a94442   red
-    //   lab            #dff0d8  label #3c763d   green
-    //   assignment     #d9edf7  label #31708f   blue
-    //   due            #d9edf7  label #31708f   blue (one assignment category:
-    //                                           the same hue as the row that puts
-    //                                           the assignment out, told apart by
-    //                                           the "Assignment due" label)
-    //   exam           #f0f1f2  label #5a5f66   grey
-    //   special_event  #fbf2d5  label #7d6230   amber
-    //   term_date      #e5dcf0  label #59468f   violet
-    //
-    // All backgrounds sit at the same pale tonal level, so body text (#111) and
-    // links keep >5:1 contrast on every row; each label clears 4.5:1 on its own
-    // background. Bold is reserved for these col-1 labels - no other column in a
-    // schedule row is bolded.
-
-    .table-row-lecture {
-        background-color: #f2dede;
-    }
-
-    .table-row-lab {
-        background-color: #dff0d8;
-    }
-
-    .table-row-assignment {
-        background-color: #d9edf7;
-    }
-
-    .table-row-due {
-        background-color: #d9edf7;
-    }
-
-    .table-row-exam {
-        background-color: #f0f1f2;
-    }
-
-    .table-row-special_event {
-        background-color: #fbf2d5;
-    }
-
-    .table-row-term_date {
-        background-color: #e5dcf0;
-    }
-
     .col-1 {
         padding: 2px;
         flex-basis: 10%;
@@ -431,50 +384,6 @@ a.tosu {
     p {
         margin-bottom: 0;
     }
-}
-
-.profile-pic-gallary {
-    padding: 0px;
-    display: inline;
-}
-
-.image--cover-container {
-    // Wide enough for a two-line role under the 80px portrait; the old 90px was
-    // sized for the name alone and wrapped a title to one word per line.
-    width: 130px;
-    float: left;
-    text-align: center;
-    margin: 0px;
-    margin-right: 24px;
-    margin-bottom: 12px;
-}
-
-// Optional `title` from a course's people.yml / dsl-course.yml (e.g. "Assistant
-// Professor of ..."). Secondary to the name, which stays the card's headline.
-.profile-title {
-    font-size: 0.75rem;
-    line-height: 1.25;
-    opacity: 0.75;
-    margin-top: -6px;
-}
-
-.image--cover {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-
-    object-fit: cover;
-    object-position: center right;
-}
-
-.announcement-box {
-    padding: 15px;
-    margin-bottom: 20px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    background-color: #fcf8e3;
-    border-color: #faebcc;
 }
 
 .center-cropped {

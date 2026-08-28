@@ -21,7 +21,11 @@ title: page.title
 
   <div>
     {% if page.due_event %}
-    <span style="font-weight: bold">Due Date: {{ page.due | date: site.dateformat }} {{ page.due_event.date | date: "%H:%M" }}</span>
+    {%- comment -%}
+    The date lives on `due_event`, which is where site.py writes it and what the schedule's
+    own due row reads. `page.due` has never existed, so this printed a bare time.
+    {%- endcomment -%}
+    <span style="font-weight: bold">Due Date: {{ page.due_event.date | date: site.dateformat }} {{ page.due_event.date | date: "%H:%M" }}</span>
     {% endif %}
     {% unless page.handout_pending %}
     <p style="font-weight: bold">Download

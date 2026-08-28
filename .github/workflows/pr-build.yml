@@ -1,0 +1,65 @@
+name: PR build check
+
+# Correctness gate: build a fixture cohort site against THIS checkout of the theme on
+# every PR, and fail if it does not compile.
+#
+# Why a fixture rather than a plain build of this repo: the theme has no pages of its own,
+# so building it exercises no layout and no include. A broken one would reach all six
+# consuming university sites with nothing in between - which has happened. An `{% assign %}`
+# inside a recursive include wrote to the outermost scope, recursed until Liquid gave up
+# with "Nesting too deep", and took two live sites down.
+#
+# The fixture is real generated output, not hand-written - see tests/README.md.
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pr-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  pr-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.2"
+          bundler-cache: true
+
+      - name: Build the fixture site against this theme
+        env:
+          JEKYLL_ENV: production
+          # The github-pages gem's metadata plugin resolves `site.github` and refuses to
+          # build without a repo to attribute it to - `_layouts/default.html` reads it. The
+          # consuming sites' own pr-build.yml sets both of these for the same reason.
+          PAGES_REPO_NWO: ${{ github.repository }}
+          JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          bundle exec jekyll build \
+            --config _config.yml,tests/fixture/_config.yml \
+            --destination _fixture_build
+
+      - name: Fail on a Liquid error rendered into the page
+        # A Liquid syntax error fails the build above, but a few classes of breakage are
+        # written INTO the output instead, where a build alone would pass them.
+        run: |
+          if grep -rn "Liquid error\|Liquid Exception\|Liquid Warning" _fixture_build; then
+            echo "::error::a Liquid error was rendered into the built site"
+            exit 1
+          fi
+
+      - name: Check the recursive All Materials index rendered its nesting
+        # The include that took the two sites down. It can fail by rendering an EMPTY page
+        # rather than by erroring, so assert a leaf from the fixture's deepest level made
+        # it into the HTML.
+        run: |
+          if ! grep -rq "Lab_Session_1.ipynb" _fixture_build; then
+            echo "::error::the All Materials index rendered no nested entries"
+            exit 1
+          fi

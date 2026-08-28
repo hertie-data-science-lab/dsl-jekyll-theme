@@ -35,6 +35,11 @@ jobs:
       - name: Build the fixture site against this theme
         env:
           JEKYLL_ENV: production
+          # The github-pages gem's metadata plugin resolves `site.github` and refuses to
+          # build without a repo to attribute it to - `_layouts/default.html` reads it. The
+          # consuming sites' own pr-build.yml sets both of these for the same reason.
+          PAGES_REPO_NWO: ${{ github.repository }}
+          JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           bundle exec jekyll build \
             --config _config.yml,tests/fixture/_config.yml \

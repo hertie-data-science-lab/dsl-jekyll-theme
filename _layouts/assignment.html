@@ -5,7 +5,13 @@ title: page.title
 <div class="post">
 
   <header class="post-header">
+    {%- comment -%}
+    `title` is the identifier (the slug's own name), `subtitle` the assignment's name from
+    the plan or, failing that, its template README's heading. A pending assignment has no
+    subtitle - the name is in the README, which is embargoed until hand-out.
+    {%- endcomment -%}
     <h1 class="post-title">{{ page.title }}</h1>
+    {% if page.subtitle %}<p class="post-subtitle">{{ page.subtitle }}</p>{% endif %}
     {%- comment -%}
     `handout_pending` (site.py): the plan has dated this assignment but it has not been
     handed out, so `date` is a hand-out still to come rather than a release that happened.
@@ -39,7 +45,7 @@ title: page.title
     {%- endcomment -%}
     {% if page.repo_url %}
     <div class="callout">
-      <p><a class="btn" href="{{ page.repo_url }}">Open your private repo on GitHub</a></p>
+      <p><a class="btn" href="{{ page.repo_url }}">Open your private submission repo on GitHub</a></p>
       {%- comment -%}
       `escape`: `repo_name` is a SHAPE, `<slug>-<your-handle>`, and those angle brackets
       make `<your-handle>` an unknown HTML tag that the browser silently drops - so the

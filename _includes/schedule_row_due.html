@@ -4,8 +4,15 @@
     {{ event.date | date: "%H:%M" }}
     <br class="date-spliter" />{{ event.date | date: "%A" }}
 </div>
+{%- comment -%}
+`title` is the row's IDENTIFIER - a session's ordinal, an assignment's slug name - and
+`subtitle` its NAME. The identifier stays and the name sits under it rather than replacing
+it, because the identifier is what ties the row to its material and must read the same
+before and after that material ships.
+{%- endcomment -%}
 <div class="col col-2" data-label="Title">
     <b>{{ include.event.description }}</b>
+    {%- if include.event.subtitle %}<br/>{{ include.event.subtitle }}{%- endif -%}
 </div>
 {%- comment -%}
 Where to submit. `repo_url`/`repo_name` are written onto the `due_event` sub-hash itself

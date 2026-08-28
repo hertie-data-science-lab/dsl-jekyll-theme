@@ -4,8 +4,15 @@
     {{ include.event.date | date: "%H:%M" }}
     <br class="date-spliter" />{{ include.event.date | date: "%A" }}
 </div>
+{%- comment -%}
+`title` is the row's IDENTIFIER - a session's ordinal, an assignment's slug name - and
+`subtitle` its NAME. The identifier stays and the name sits under it rather than replacing
+it, because the identifier is what ties the row to its material and must read the same
+before and after that material ships.
+{%- endcomment -%}
 <div class="col col-2" data-label="Title">
     <b>{{ include.event.title }}</b>
+    {%- if include.event.subtitle %}<br/>{{ include.event.subtitle }}{%- endif -%}
 </div>
 {%- comment -%}
 `handout_pending` (site.py) is an assignment whose dates are in the plan but which has not

@@ -8,9 +8,9 @@ title: page.title
     <h1 class="post-title">{{ page.title }}</h1>
     {%- comment -%}
     `handout_pending` (site.py): the plan has dated this assignment but it has not been
-    handed out, so `date` is a hand-out still to come rather than a release that happened,
-    and there is nothing to download. The brief itself is withheld upstream - the page body
-    says so - so this layout only has to stop announcing files that do not exist yet.
+    handed out, so `date` is a hand-out still to come rather than a release that happened.
+    The brief itself is withheld upstream - the body says so - so this layout only has to
+    stop announcing a past release, and files and a repo that do not exist yet.
     {%- endcomment -%}
     {% if page.handout_pending %}
     <p class="post-meta">Hands out on {{ page.date | date: "%A" }} {{ page.date | date: site.dateformat }}</p>
@@ -25,9 +25,33 @@ title: page.title
     The date lives on `due_event`, which is where site.py writes it and what the schedule's
     own due row reads. `page.due` has never existed, so this printed a bare time.
     {%- endcomment -%}
-    <span style="font-weight: bold">Due Date: {{ page.due_event.date | date: site.dateformat }} {{ page.due_event.date | date: "%H:%M" }}</span>
+    <p style="font-weight: bold">Due Date: {{ page.due_event.date | date: site.dateformat }} {{ page.due_event.date | date: "%H:%M" }}</p>
     {% endif %}
-    {% unless page.handout_pending %}
+
+    {%- comment -%}
+    Where the student actually works. This is the first thing they need and it used to be a
+    grey italic line at the very bottom of the page, under the whole brief - so the answer
+    to "where do I write this?" sat below the thing it was needed for. `repo_url` is the
+    cohort org's repo list filtered to this assignment rather than one student's address:
+    the page is public and identical for everyone, and GitHub shows a signed-in student
+    only the repos they can see, so the filter lands on their own. Absent while the
+    assignment is pending - there is nothing at the other end of it yet.
+    {%- endcomment -%}
+    {% if page.repo_url %}
+    <div class="callout">
+      <p><a class="btn" href="{{ page.repo_url }}">Open your repository on GitHub</a></p>
+      <p>Your work goes in <code>{{ page.repo_name }}</code>. Clone it, commit as you go, and
+      push to <code>main</code> - that push is your submission.</p>
+    </div>
+    {% endif %}
+
+    {%- comment -%}
+    `pdf` / `attachment` / `solutions` are hand-authored front matter from the upstream
+    template; the DSL sync writes none of them, so this printed a bold "Download" with
+    nothing after it on every generated assignment page. Shown only when there is in fact
+    something to download.
+    {%- endcomment -%}
+    {% if page.pdf or page.attachment or page.solutions %}
     <p style="font-weight: bold">Download
       {% if page.pdf %}
       [<a href="{{ page.pdf | prepend: site.baseurl }}">problems</a>]
@@ -39,7 +63,7 @@ title: page.title
       [<a href="{{ page.solutions | prepend: site.baseurl }}">solutions</a>]
       {% endif %}
     </p>
-    {% endunless %}
+    {% endif %}
 
     <div style="color: gray;">
       <h3>Late Policy</h3>
@@ -51,5 +75,16 @@ title: page.title
   <article class="post-content">
     {{ content }}
   </article>
+
+  {%- comment -%}
+  And again under the brief, quietly: a student who has just finished reading the task is
+  at the point of starting it, and should not have to scroll back up for the link.
+  {%- endcomment -%}
+  {% if page.repo_url %}
+  <p style="font-size: 0.9em; color: #5c5c5c;">
+    Submit by pushing to <code>main</code> in
+    <a href="{{ page.repo_url }}"><code>{{ page.repo_name }}</code></a>.
+  </p>
+  {% endif %}
 
 </div>

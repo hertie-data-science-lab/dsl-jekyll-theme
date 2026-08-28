@@ -358,6 +358,12 @@ ul#archive li span a:hover {
     .session-files {
         margin: 0 0 0 1.2em;
     }
+    /* The status line - "Materials for session N are not yet released ...". It is the
+       last thing in the block and butted straight against the description above it, so
+       an unreleased session read as one run-on paragraph. */
+    .session-note {
+        margin-top: 0.9em;
+    }
 }
 
 hr.session-rule {

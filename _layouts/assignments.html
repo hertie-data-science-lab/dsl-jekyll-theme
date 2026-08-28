@@ -5,16 +5,27 @@ layout: page
 {% comment %}
 The intro line only makes sense beside an actual list, so an empty collection says so
 instead. `content` is the generated page stub (site.py), which states who can open them.
+
+`handout_pending` (site.py) is an assignment the plan has dated but not yet handed out. It
+is listed, because its dates are already public on the schedule - but unlinked, and with
+its own sentence in place of a brief: the page behind it holds nothing until hand-out, and
+the title shown is the plan-side name, never the one the template's README gives it.
 {% endcomment %}
 {% if site.assignments == nil or site.assignments.size == 0 %}
-<p>No assignments released yet.</p>
+<p>No assignments yet.</p>
 {% else %}
 {{ content }}
 
 {% assign entries = site.assignments | sort: 'date' %}
 {% for entry in entries %}
 <section class="session">
-<h2 class="session-title"><a href="{{ entry.url | prepend: site.baseurl }}">{{ entry.title }}</a></h2>
+{%- comment -%}
+One heading either way - only the anchor differs, and duplicating the `h2` between two
+branches is how the two come to disagree. A pending entry has no `pdf`/`attachment`, so the
+files block below needs no guard of its own.
+{%- endcomment -%}
+<h2 class="session-title">{% if entry.handout_pending %}{{ entry.title }}{% else %}<a href="{{ entry.url | prepend: site.baseurl }}">{{ entry.title }}</a>{% endif %}</h2>
+{% if entry.handout_pending %}<div class="markdown-content session-note">{{ entry.content }}</div>{% endif %}
 {% if entry.pdf %}
 <p class="session-files-label" style="margin-bottom: 2px;"><strong>Files</strong></p>
 <ul class="session-files">

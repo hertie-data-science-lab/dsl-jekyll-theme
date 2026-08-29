@@ -250,6 +250,25 @@ a.tosu {
 
 
 
+/**
+ * Visually hidden: out of the layout but still read aloud and still focusable. For
+ * headings and control labels that only assistive tech needs - `display: none` would
+ * hide them from that too.
+ */
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+
+
 .container {
     max-width: 1000px;
     margin-left: auto;

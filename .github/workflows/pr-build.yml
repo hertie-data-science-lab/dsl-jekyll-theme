@@ -35,10 +35,13 @@ jobs:
       - name: Build the fixture site against this theme
         env:
           JEKYLL_ENV: production
-          # The github-pages gem's metadata plugin resolves `site.github` and refuses to
-          # build without a repo to attribute it to - `_layouts/default.html` reads it. The
-          # consuming sites' own pr-build.yml sets both of these for the same reason.
+          # Nothing here reads `site.github`. What needs the repo name is
+          # jekyll-github-metadata, bundled with the github-pages gem: it takes over
+          # `site.baseurl`, which the chrome uses (_includes/header.html, nav.html), and
+          # aborts the whole build with "No repo name found" if it cannot name a repo.
           PAGES_REPO_NWO: ${{ github.repository }}
+          # Only downgrades a warning - without it the plugin still resolves, saying "some
+          # fields may be missing". Kept so the log stays clean and the metadata is real.
           JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           bundle exec jekyll build \

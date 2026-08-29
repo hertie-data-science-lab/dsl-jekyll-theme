@@ -4,37 +4,15 @@
 #
 #   bundle exec jekyll build --config _config.yml,tests/fixture/_config.yml
 #
-# Deliberately no `remote_theme:`. The layouts and includes resolve from THIS checkout,
-# so the build tests the code in the pull request rather than whatever is on main.
+# Deliberately no `remote_theme:`. The layouts and includes resolve from THIS checkout, so
+# the build tests the code in the pull request rather than whatever is on main.
 
-# --- Course identity: what a consuming site's own _config.yml supplies ---
-course_name: "Deep Learning (Fixture)"
-course_description: "A fixture course. Not a real offering; nothing here is published."
-course_semester: "Fall 2026"
-course_code: "E1234"
-github_org: "hertie-dsl-demo-f2026"
+# --- Site identity, in the shape a NON-course consumer has it: `title` and no semester.
+# The course keys are the other shape, and `_includes/head.html` / `header.html` fall back
+# from one to the other - so a fixture that set them would never exercise the fallback.
+title: "Fixture Site"
+description: "A fixture. Not a real site; nothing here is published."
+github_org: "hertie-data-science-lab"
 
 # --- Where this fixture's content lives, so it stays out of the theme's own root ---
 data_dir: tests/fixture/_data
-collections_dir: tests/fixture
-
-collections:
-  events:
-    output: true
-  lectures:
-    output: true
-  assignments:
-    output: true
-  announcements:
-    output: false
-
-# The cohort sites set this, and `_layouts/assignment.html` depends on it
-defaults:
-  - scope:
-      path: ""
-      type: "assignments"
-    values:
-      layout: "assignment"
-
-dateformat: "%m/%d/%Y"
-future: true

@@ -2,35 +2,70 @@
 
   <div class="wrapper" style="z-index: 100;">
       <table><tr>
-          <td><img width="75" src="{{ "/assets/images/logo.png" | relative_url }}" valign="middle"></td>
-          <td style="padding-left:10px;"><a class="schoolname" style="font-size: 15px;" class="site-title" href="{{ site.schoolurl }}">{{ site.schoolname }}</a>
+          <td><img width="75" src="{{ "/assets/images/logo.png" | relative_url }}" alt="{{ site.schoolname | default: site.title }}" valign="middle"></td>
+          {%- comment -%}
+          One class, `schoolname`. This element carried `class="schoolname"` AND
+          `class="site-title"`; HTML keeps the first, so `site-title` has never applied
+          here and adding it now would change the desktop header - it floats left, and
+          sets Titillium Web at weight 500 with -1px tracking where this line currently
+          renders in the body face.
+          {%- endcomment -%}
+          <td style="padding-left:10px;"><a class="schoolname" style="font-size: 15px;" href="{{ site.schoolurl }}">{{ site.schoolname }}</a>
           <br/>
-          <span style="margin-top: -2px;margin-bottom: -10px;" class="site-title"><a href="{{ site.baseurl }}/" title="{{ site.course_name }} / {{ site.course_semester }} - {{ site.schoolname }}"><b>{{ site.course_name }}</a></b></span>
+          {%- comment -%}
+          `course_name` on a course site, `title` on every other site this theme serves -
+          and no semester line at all where there is no semester, rather than an empty bold
+          strip under the name.
+          {%- endcomment -%}
+          {%- assign site_name = site.course_name | default: site.title -%}
+          <span style="margin-top: -2px;margin-bottom: -10px;" class="site-title"><a href="{{ site.baseurl }}/" title="{{ site_name }} - {{ site.schoolname }}"><b>{{ site_name }}</b></a></span>
+          {% if site.course_semester and site.course_semester != "" %}
           <br/>
           <span class="coursesemeter" style="font-size: 12px;font-weight: bold;margin-top: 10px;display: block;">{{ site.course_semester }}</span>
+          {% endif %}
           </td>
         </tr></table>
 
     <nav class="site-nav">
 
-      <a href="#" class="menu-icon menu.open">
-        <svg viewBox="0 0 18 15">
+      {%- comment -%}
+      The mobile menu toggle. `_sass/_header.scss` opens the menu on `:hover` below
+      $on-palm, which a touch screen and a keyboard both fail to deliver - so this is a
+      real button, and the script at the end of this file toggles `.open` on the panel.
+      The hover rule stays as the no-JS fallback.
+      {%- endcomment -%}
+      <button type="button" class="menu-icon" aria-expanded="false" aria-controls="site-nav-trigger">
+        <svg viewBox="0 0 18 15" aria-hidden="true" focusable="false">
           <path fill="#424242" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
           <path fill="#424242" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484 h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
           <path fill="#424242" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
         </svg>
-      </a>  
+        <span class="visually-hidden">Menu</span>
+      </button>
 
-    <div class="trigger"><h1>Main Navigation</h1>
+    <div class="trigger" id="site-nav-trigger"><h2 class="visually-hidden">Main Navigation</h2>
 
  {% include nav.html  %}
 
-     </div>  
+     </div>
     </nav>
 
   </div>
 
   <div class="header-texture" style="height:100%; z-index: 0; position: absolute; top:0; right: 0; left: 0;
-  background-image: url('{{ '/assets/images/pattern.png' | relative_url }}');" />
+  background-image: url('{{ '/assets/images/pattern.png' | relative_url }}');"></div>
 
 </header>
+
+<script>
+  (function () {
+    var toggle = document.querySelector('.site-nav .menu-icon');
+    var panel = document.getElementById('site-nav-trigger');
+    if (!toggle || !panel) { return; }
+    toggle.addEventListener('click', function () {
+      var open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
+      panel.classList.toggle('open', !open);
+    });
+  })();
+</script>

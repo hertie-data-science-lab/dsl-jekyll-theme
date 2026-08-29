@@ -4,12 +4,12 @@ name: PR build check
 # every PR, and fail if it does not compile.
 #
 # Why a fixture rather than a plain build of this repo: the theme has no pages of its own,
-# so building it exercises no layout and no include. A broken one would reach all six
-# consuming university sites with nothing in between - which has happened. An `{% assign %}`
-# inside a recursive include wrote to the outermost scope, recursed until Liquid gave up
-# with "Nesting too deep", and took two live sites down.
+# so building it exercises no layout and no include. A broken one reaches every consuming
+# site - which has happened, twice.
 #
-# The fixture is real generated output, not hand-written - see tests/README.md.
+# Scope: what this theme still owns - the default/page/post layouts and the chrome. The
+# course-specific layouts moved to dsl-teaching-toolkit, which builds its own fixture
+# cohort site on every PR. See tests/README.md.
 
 on:
   pull_request:
@@ -35,10 +35,13 @@ jobs:
       - name: Build the fixture site against this theme
         env:
           JEKYLL_ENV: production
-          # The github-pages gem's metadata plugin resolves `site.github` and refuses to
-          # build without a repo to attribute it to - `_layouts/default.html` reads it. The
-          # consuming sites' own pr-build.yml sets both of these for the same reason.
+          # Nothing here reads `site.github`. What needs the repo name is
+          # jekyll-github-metadata, bundled with the github-pages gem: it takes over
+          # `site.baseurl`, which the chrome uses (_includes/header.html, nav.html), and
+          # aborts the whole build with "No repo name found" if it cannot name a repo.
           PAGES_REPO_NWO: ${{ github.repository }}
+          # Only downgrades a warning - without it the plugin still resolves, saying "some
+          # fields may be missing". Kept so the log stays clean and the metadata is real.
           JEKYLL_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           bundle exec jekyll build \
@@ -54,12 +57,11 @@ jobs:
             exit 1
           fi
 
-      - name: Check the recursive All Materials index rendered its nesting
-        # The include that took the two sites down. It can fail by rendering an EMPTY page
-        # rather than by erroring, so assert a leaf from the fixture's deepest level made
-        # it into the HTML.
+      - name: Check the chrome actually rendered
+        # A missing `_data` key or a mistyped include empties a partial without erroring,
+        # so assert the header, the nav and the footer each put something in the page.
         run: |
-          if ! grep -rq "Lab_Session_1.ipynb" _fixture_build; then
-            echo "::error::the All Materials index rendered no nested entries"
-            exit 1
-          fi
+          for needle in "Fixture Site" "site-nav" "site-footer"; do
+            grep -rq -- "$needle" _fixture_build || {
+              echo "::error::$needle is nowhere in the build"; exit 1; }
+          done

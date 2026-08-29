@@ -8,12 +8,12 @@
 title: "DSL Jekyll Theme"
 description: "Shared brand theme for Hertie Data Science Lab websites."
 
-# Brand / institution defaults (consumers override)
+# Brand / institution defaults (consumers override). No `course_name`/`course_semester`:
+# those are a COURSE site's keys, and the chrome falls back to `title` without them -
+# which is the case this repo's own build is here to exercise.
 schoolname: "Hertie School"
 schoolurl: "https://hertie-school.org/en/datasciencelab"
 dsl_org_url: "https://github.com/hertie-data-science-lab"
-course_name: "DSL Jekyll Theme"
-course_semester: ""
 address: |
     Data Science Lab
     Hertie School

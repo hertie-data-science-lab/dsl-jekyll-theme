@@ -3,7 +3,14 @@
   <div class="wrapper" style="z-index: 100;">
       <table><tr>
           <td><img width="75" src="{{ "/assets/images/logo.png" | relative_url }}" alt="{{ site.schoolname | default: site.title }}" valign="middle"></td>
-          <td style="padding-left:10px;"><a class="schoolname" style="font-size: 15px;" class="site-title" href="{{ site.schoolurl }}">{{ site.schoolname }}</a>
+          {%- comment -%}
+          One class, `schoolname`. This element carried `class="schoolname"` AND
+          `class="site-title"`; HTML keeps the first, so `site-title` has never applied
+          here and adding it now would change the desktop header - it floats left, and
+          sets Titillium Web at weight 500 with -1px tracking where this line currently
+          renders in the body face.
+          {%- endcomment -%}
+          <td style="padding-left:10px;"><a class="schoolname" style="font-size: 15px;" href="{{ site.schoolurl }}">{{ site.schoolname }}</a>
           <br/>
           {%- comment -%}
           `course_name` on a course site, `title` on every other site this theme serves -
@@ -11,7 +18,7 @@
           strip under the name.
           {%- endcomment -%}
           {%- assign site_name = site.course_name | default: site.title -%}
-          <span style="margin-top: -2px;margin-bottom: -10px;" class="site-title"><a href="{{ site.baseurl }}/" title="{{ site_name }} - {{ site.schoolname }}"><b>{{ site_name }}</a></b></span>
+          <span style="margin-top: -2px;margin-bottom: -10px;" class="site-title"><a href="{{ site.baseurl }}/" title="{{ site_name }} - {{ site.schoolname }}"><b>{{ site_name }}</b></a></span>
           {% if site.course_semester and site.course_semester != "" %}
           <br/>
           <span class="coursesemeter" style="font-size: 12px;font-weight: bold;margin-top: 10px;display: block;">{{ site.course_semester }}</span>

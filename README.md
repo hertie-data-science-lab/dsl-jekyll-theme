@@ -12,9 +12,9 @@ Generic chrome only:
 - the head, header, nav and footer partials
 - the stylesheet at `/assets/css/main.css` and brand images under `/assets/images/`
 
-A consuming site supplies its own content, `_data/nav.yml`, and `_config.yml` (`title` or
-`course_name`, `schoolname`, `address`, …). `course_semester` is optional; without it no
-semester line renders.
+A consuming site supplies everything else — see **Use it** below. `course_name` and
+`course_semester` are optional: the chrome falls back to `title`, and without a semester
+no semester line renders.
 
 **Course-specific layouts are not here.** The Schedule, Lectures, Labs, Readings, All
 Materials, Assignments and Home pages of a DSL course site are rendered by templates in
@@ -24,10 +24,11 @@ matter that repo's `site.py` generates, so they change with it and are tested ag
 
 ## Use it
 
-In a consuming site's `_config.yml`, **pinned to a tag**:
+In a consuming site's `_config.yml`, pinned to a `<ref>` — a tag or a full commit SHA,
+never a branch:
 
 ```yaml
-remote_theme: hertie-data-science-lab/dsl-jekyll-theme@v1.0.0
+remote_theme: hertie-data-science-lab/dsl-jekyll-theme@<ref>
 plugins:
   - jekyll-remote-theme
 ```
@@ -38,21 +39,34 @@ and in its `Gemfile`:
 gem "jekyll-remote-theme"
 ```
 
-Pin, do not track `main`. An unpinned site rebuilds against whatever merged here minutes
-ago, with no review in between — which has broken live sites twice.
+An unpinned site rebuilds against whatever merged here minutes ago, with no review in
+between — which has broken live sites twice.
+
+The site must supply its own content, `_data/nav.yml` (the tab bar `_includes/nav.html`
+reads), and a `_config.yml` with at least `title` — plus `schoolname`, `schoolurl` and
+`address` for the header and footer. It may also ship `_sass/_course.scss`: Jekyll puts a
+site's own `_sass` ahead of the theme's, and `assets/css/main.scss` imports `course`
+**last**, so that file overrides anything here with every theme variable in scope. This
+repo's copy is empty, so a site without one still resolves the import.
 
 ## Versioning
 
-SemVer tags, and the major is what a consumer's pin is really for:
+There are **no tags yet**. Consumers pin a SHA: `dsl_course/site_repo.py` in the toolkit
+pins `9288394…` for every cohort site, and `mds-onboarding` and `course-website-template`
+currently track `main` unpinned.
 
-| Bump | For |
-|---|---|
-| **major** (`v2.0.0`) | a layout, include or CSS class a consumer may depend on is removed or renamed |
-| **minor** (`v1.1.0`) | something new that existing sites keep rendering without |
-| **patch** (`v1.0.1`) | a fix that changes no contract |
+The plan, once the current work lands:
 
-Cut a tag on `main`, then bump the pin in each consumer. For DSL course sites that is one
-line — `site.THEME_REF` in the toolkit — and the next sync carries it to every cohort.
+- **`v1.0.0`** at `9288394` — the last commit before the course layouts left the theme, so
+  today's sites can move from a SHA to a tag with no rendering change.
+- **`v2.0.0`** at the merge of the branch that removes them. A major, because a consuming
+  site that used the Schedule / Lectures / Assignments layouts loses them.
+
+After that, SemVer: **major** when a layout, include or CSS class a consumer may depend on
+goes or is renamed; **minor** for something new that existing sites render fine without;
+**patch** for a fix that changes no contract. Cut the tag on `main`, then bump each
+consumer's pin — for DSL course sites that is `THEME_REF` in the toolkit, and the next
+sync carries it to every cohort.
 
 ## Restyle
 
@@ -60,11 +74,8 @@ Brand colours live in [`_sass/_user_vars.scss`](_sass/_user_vars.scss) (Hertie r
 `#BA0020` etc.). Shared components (cards, buttons, callouts) live in
 [`_sass/_cards.scss`](_sass/_cards.scss).
 
-A consuming site adds its own styles in `_sass/_course.scss`. `assets/css/main.scss`
-imports it **last**, so it can override anything above and every variable declared here is
-in scope for it. The copy in this repo is empty — Jekyll puts a site's own `_sass` ahead of
-the theme's, so a site that ships the file gets its own and a site that does not resolves
-to the empty one. DSL course sites are written one by the course sync.
+A consuming site's own styles go in its `_sass/_course.scss` — see **Use it** above. DSL
+course sites are written one by the course sync.
 
 ## Auto-propagation
 
